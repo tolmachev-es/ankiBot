@@ -29,11 +29,7 @@ public class BotComponent extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        try {
 
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
