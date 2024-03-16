@@ -1,5 +1,6 @@
-package com.wcobq.ankibot.User.repository;
+package com.wcobq.ankibot.Anki.repository;
 
+import com.wcobq.ankibot.Anki.repository.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

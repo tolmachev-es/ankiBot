@@ -1,7 +1,7 @@
-package com.wcobq.ankibot.User.mapper;
+package com.wcobq.ankibot.Anki.mapper;
 
-import com.wcobq.ankibot.User.model.User;
-import com.wcobq.ankibot.User.repository.UserEntity;
+import com.wcobq.ankibot.Anki.model.User;
+import com.wcobq.ankibot.Anki.repository.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

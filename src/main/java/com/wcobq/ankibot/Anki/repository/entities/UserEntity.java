@@ -1,4 +1,4 @@
-package com.wcobq.ankibot.User.repository;
+package com.wcobq.ankibot.Anki.repository.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,10 +6,9 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(schema = "PUBLIC", name = "USER")
+@Table(schema = "PUBLIC", name = "USERS")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Long id;
     @Column(name = "USERNAME", nullable = false, unique = true)

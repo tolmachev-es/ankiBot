@@ -1,15 +1,12 @@
 package com.wcobq.ankibot;
 
-import com.wcobq.ankibot.Anki.AnkiService;
+import com.wcobq.ankibot.Anki.service.interfaces.AnkiService;
 import com.wcobq.ankibot.Configuration.BotConfiguration;
-import com.wcobq.ankibot.User.service.UserService;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -32,9 +29,11 @@ public class BotComponent extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Update update1 = update;
+        try {
 
-
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

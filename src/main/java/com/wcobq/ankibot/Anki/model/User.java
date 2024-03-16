@@ -1,9 +1,10 @@
-package com.wcobq.ankibot.User.model;
+package com.wcobq.ankibot.Anki.model;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
 public class User {
     private Long id;
     private String username;
