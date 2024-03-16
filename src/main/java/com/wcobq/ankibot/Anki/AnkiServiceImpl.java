@@ -1,5 +1,6 @@
 package com.wcobq.ankibot.Anki;
 
+import com.wcobq.ankibot.User.model.User;
 import com.wcobq.ankibot.User.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class AnkiServiceImpl implements AnkiService{
 
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     public SendMessage getMenu(Update update) {
-        userService.getUser(update);
+        User user = userService.getUser(update);
+        return null;
+    }
+
+    public SendMessage setCommand(Update update) {
         return null;
     }
 }
