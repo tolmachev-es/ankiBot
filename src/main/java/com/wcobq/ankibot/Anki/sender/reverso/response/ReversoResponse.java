@@ -1,4 +1,4 @@
-package com.wcobq.ankibot.Anki.Reverso.response;
+package com.wcobq.ankibot.Anki.sender.reverso.response;
 
 import lombok.Data;
 
@@ -10,9 +10,11 @@ public class ReversoResponse {
     private String from;
     private String to;
     private List<String> input;
-    private boolean correctedText;
+    private Boolean correctedText;
     private List<String> translation;
     private List<String> engines;
     private LanguageDetection languageDetection;
-    private List<ContextResponse> contextResults;
+    private ContextResponse contextResults;
+    private Boolean truncated;
+    private int timeTaken;
 }

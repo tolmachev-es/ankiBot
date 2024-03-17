@@ -1,44 +1,50 @@
 package com.wcobq.ankibot.Anki.service;
 
-import com.wcobq.ankibot.Anki.Reverso.request.ReversoOptions;
-import com.wcobq.ankibot.Anki.Reverso.request.ReversoRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wcobq.ankibot.Anki.repository.entities.EngWordEntity;
+import com.wcobq.ankibot.Anki.repository.entities.TranslateEntity;
+import com.wcobq.ankibot.Anki.sender.client.ReversoClient;
+import com.wcobq.ankibot.Anki.sender.reverso.response.ContextResponse;
+import com.wcobq.ankibot.Anki.sender.reverso.response.ResponseResults;
+import com.wcobq.ankibot.Anki.sender.reverso.response.ReversoResponse;
 import com.wcobq.ankibot.Anki.service.interfaces.TranslateSender;
-import org.glassfish.grizzly.http.HttpHeader;
-import org.springframework.beans.factory.annotation.Value;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpHeaders;
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class ReversoTranslator implements TranslateSender {
-    @Value("${reverso.api}")
-    private String api;
+
+    private final ReversoClient reversoClient;
+    private final ObjectMapper objectMapper;
 
     @Override
-    public List<String> getTranslate() {
-        return null;
+    public List<EngWordEntity> getTranslate(TranslateEntity translateEntity) {
+        ResponseEntity<Object> entity = reversoClient.addNewRequest(translateEntity.getRuWord());
+        try {
+            ReversoResponse reversoResponse = objectMapper.convertValue(entity.getBody(), ReversoResponse.class);
+            return getEngWordEntity(reversoResponse, translateEntity);
+        } catch (ClassCastException e) {
+            return null;
+        }
     }
 
-    private ReversoRequest createRequest(String text) {
-        return ReversoRequest.builder()
-                .format("text")
-                .from("ru")
-                .to("eng")
-                .input(text)
-                .options(createReversoOprions())
-                .build();
-    }
-
-    private ReversoOptions createReversoOprions() {
-        return ReversoOptions.builder()
-                .sentenceSplitter(true)
-                .origin("translation.web")
-                .contextResults(true)
-                .languageDetection(true)
-                .build();
-    }
-
-    private HttpHeaders addHttpHeaders() {
-        HttpHeader httpHeaders = new HttpHeader();
+    private List<EngWordEntity> getEngWordEntity(ReversoResponse response, TranslateEntity translateEntity) {
+        if (response == null) {
+            return null;
+        }
+        List<EngWordEntity> resultList = new ArrayList<>();
+            for (ResponseResults results : response.getContextResults().getResults()) {
+                EngWordEntity entity = EngWordEntity.builder()
+                        .engWord(results.getTranslation())
+                        .build();
+                resultList.add(entity);
+            }
+        return resultList;
     }
 }

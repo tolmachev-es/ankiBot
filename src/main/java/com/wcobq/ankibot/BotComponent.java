@@ -29,7 +29,7 @@ public class BotComponent extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        ankiService.getMenu(update);
     }
 
     @Override

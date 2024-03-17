@@ -1,4 +1,4 @@
-package com.wcobq.ankibot.Anki.Reverso.response;
+package com.wcobq.ankibot.Anki.sender.reverso.response;
 
 import lombok.Data;
 

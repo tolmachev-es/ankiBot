@@ -21,7 +21,7 @@ public class AnkiServiceImpl implements AnkiService {
     @Override
     public List<SendMessage> getMenu(Update update) {
         User user = userService.checkUser(userSender(update));
-
+        translateService.addWord(user, getText(update));
         return null;
     }
 
@@ -46,6 +46,14 @@ public class AnkiServiceImpl implements AnkiService {
             return update.getMessage().getChatId();
         } catch (Exception e) {
             return update.getCallbackQuery().getMessage().getChatId();
+        }
+    }
+
+    private String getText(Update update) {
+        try {
+            return update.getMessage().getText();
+        } catch (Exception e) {
+            return update.getCallbackQuery().getMessage().getText();
         }
     }
 
