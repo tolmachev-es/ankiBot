@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcobq.ankibot.Anki.repository.entities.EngWordEntity;
 import com.wcobq.ankibot.Anki.repository.entities.TranslateEntity;
 import com.wcobq.ankibot.Anki.sender.client.ReversoClient;
-import com.wcobq.ankibot.Anki.sender.reverso.response.ContextResponse;
 import com.wcobq.ankibot.Anki.sender.reverso.response.ResponseResults;
 import com.wcobq.ankibot.Anki.sender.reverso.response.ReversoResponse;
 import com.wcobq.ankibot.Anki.service.interfaces.TranslateSender;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,12 +37,12 @@ public class ReversoTranslator implements TranslateSender {
             return null;
         }
         List<EngWordEntity> resultList = new ArrayList<>();
-            for (ResponseResults results : response.getContextResults().getResults()) {
-                EngWordEntity entity = EngWordEntity.builder()
-                        .engWord(results.getTranslation())
-                        .build();
-                resultList.add(entity);
-            }
+        for (ResponseResults results : response.getContextResults().getResults()) {
+            EngWordEntity entity = EngWordEntity.builder()
+                    .engWord(results.getTranslation())
+                    .build();
+            resultList.add(entity);
+        }
         return resultList;
     }
 }

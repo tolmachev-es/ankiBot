@@ -8,9 +8,7 @@ import com.wcobq.ankibot.Anki.repository.entities.TranslateEntity;
 import com.wcobq.ankibot.Anki.service.interfaces.TranslateSender;
 import com.wcobq.ankibot.Anki.service.interfaces.TranslateService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.List;
@@ -24,9 +22,8 @@ public class TranslateServiceImpl implements TranslateService {
     private final TranslateSender translateSender;
 
     @Override
-    public SendMessage addWord(User user, String word) {
-        TranslateEntity translateEntity = getWords(word);
-        return null;
+    public TranslateEntity addWord(String word) {
+        return getWords(word);
     }
 
     @Override
@@ -39,8 +36,8 @@ public class TranslateServiceImpl implements TranslateService {
         Optional<TranslateEntity> getWord = translateRepository.findByRuWord(newWord);
         return getWord.orElseGet(() -> createTranslate(newWord));
     }
-    @Transactional
-    protected TranslateEntity createTranslate(String word) {
+
+    private TranslateEntity createTranslate(String word) {
         TranslateEntity translateEntity = TranslateEntity.builder().ruWord(word).build();
         try {
             translateRepository.save(translateEntity);
@@ -49,10 +46,10 @@ public class TranslateServiceImpl implements TranslateService {
         }
         List<EngWordEntity> engWordEntities = translateSender.getTranslate(translateEntity);
         if (!engWordEntities.isEmpty()) {
+            engWordRepository.saveAll(engWordEntities);
             translateEntity.setWordEntities(engWordEntities);
             translateRepository.save(translateEntity);
         }
         return translateEntity;
     }
-
 }

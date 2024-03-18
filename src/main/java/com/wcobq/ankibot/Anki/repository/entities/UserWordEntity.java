@@ -2,9 +2,13 @@ package com.wcobq.ankibot.Anki.repository.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @Table(schema = "PUBLIC", name = "USER_WORDS")
 public class UserWordEntity {
     @Id

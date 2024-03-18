@@ -1,14 +1,19 @@
 package com.wcobq.ankibot.Anki.service;
 
+import com.wcobq.ankibot.Anki.mapper.UserMapper;
+import com.wcobq.ankibot.Anki.model.Quiz;
 import com.wcobq.ankibot.Anki.model.User;
+import com.wcobq.ankibot.Anki.repository.entities.TranslateEntity;
 import com.wcobq.ankibot.Anki.service.interfaces.AnkiService;
 import com.wcobq.ankibot.Anki.service.interfaces.TranslateService;
 import com.wcobq.ankibot.Anki.service.interfaces.UserService;
+import com.wcobq.ankibot.Anki.service.interfaces.UserWordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,12 +22,24 @@ public class AnkiServiceImpl implements AnkiService {
 
     private final UserService userService;
     private final TranslateService translateService;
+    private final UserWordService userWordService;
 
     @Override
     public List<SendMessage> getMenu(Update update) {
+        Quiz quiz = userWordService.getQuizWord(
+                UserMapper.USER_MAPPER.toEntity(
+                        userService.checkUser(
+                                userSender(update))));
+        return addWord(update);
+    }
+
+    private List<SendMessage> addWord(Update update) {
+        List<SendMessage> sendMessages = new ArrayList<>();
         User user = userService.checkUser(userSender(update));
-        translateService.addWord(user, getText(update));
-        return null;
+        TranslateEntity translate = translateService.addWord(getText(update));
+        userWordService.createUserWord(translate, UserMapper.USER_MAPPER.toEntity(user));
+        sendMessages.add(createAddWordMessage(getChatId(update), translate));
+        return sendMessages;
     }
 
     private String getUsername(Update update) {
@@ -33,6 +50,7 @@ public class AnkiServiceImpl implements AnkiService {
         }
     }
 
+
     private Long getUserID(Update update) {
         try {
             return update.getMessage().getChat().getId();
@@ -41,11 +59,11 @@ public class AnkiServiceImpl implements AnkiService {
         }
     }
 
-    private Long getChatId(Update update) {
+    private String getChatId(Update update) {
         try {
-            return update.getMessage().getChatId();
+            return String.valueOf(update.getMessage().getChatId());
         } catch (Exception e) {
-            return update.getCallbackQuery().getMessage().getChatId();
+            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
         }
     }
 
@@ -57,11 +75,15 @@ public class AnkiServiceImpl implements AnkiService {
         }
     }
 
-    private User userSender(Update update){
+    private User userSender(Update update) {
         return User.builder()
                 .id(getUserID(update))
                 .username(getUsername(update))
                 .build();
     }
 
+    private SendMessage createAddWordMessage(String chatId, TranslateEntity translate) {
+        String text = String.format("Слово '%s' успешно добавлено", translate.getRuWord());
+        return new SendMessage(String.valueOf(chatId), text);
+    }
 }

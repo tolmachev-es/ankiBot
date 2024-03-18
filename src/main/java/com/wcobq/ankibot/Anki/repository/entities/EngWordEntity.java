@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @SuperBuilder
@@ -19,4 +22,11 @@ public class EngWordEntity {
     private Long id;
     @Column(name = "ENG_WORD")
     private String engWord;
+    @ManyToMany
+    @JoinTable(
+            name = "RU_WORD_TRANSLATE",
+            joinColumns = @JoinColumn(name = "ENG_WORD_ID"),
+            inverseJoinColumns = @JoinColumn(name = "RU_WORD_ID")
+    )
+    private List<TranslateEntity> translateEntity = new ArrayList<>();
 }
