@@ -3,10 +3,7 @@ package com.wcobq.ankibot.Anki.model;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -16,6 +13,7 @@ public class Quiz {
     private List<String> engWords;
 
     public void addRandomWord(List<String> words) {
+        this.engWords = new ArrayList<>();
         engWords.addAll(words.stream().sorted(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {

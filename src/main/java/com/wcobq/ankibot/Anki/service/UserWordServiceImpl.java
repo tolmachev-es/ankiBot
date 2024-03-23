@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,10 +47,7 @@ public class UserWordServiceImpl implements UserWordService {
     private List<String> getRandomWords(UserWordEntity userWord) {
         List<String> engWords = new ArrayList<>();
         engWords.add(userWord.getWord().getWordEntities().getFirst().getEngWord());
-        engWords.addAll(engWordRepository.getThreeWord(userWord.getWord().getId())
-                .stream()
-                .map(EngWordEntity::getEngWord)
-                .toList());
+        Set<EngWordEntity> objects = engWordRepository.findAllByEngWord("phone");
         return engWords;
     }
 }

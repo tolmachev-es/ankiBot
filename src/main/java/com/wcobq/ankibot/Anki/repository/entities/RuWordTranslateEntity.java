@@ -13,7 +13,15 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(schema = "PUBLIC", name = "RU_WORD_TRANSLATE")
 @Entity
-public class RuWordTranslateEntity implements Serializable {
+public class RuWordTranslateEntity {
     @EmbeddedId
-    private RuWordId id;
+    private RuWordKey id;
+    @ManyToOne
+    @MapsId("ruWordId")
+    @JoinColumn(name = "RU_WORD_ID", nullable = false)
+    private TranslateEntity ruWord;
+    @ManyToOne
+    @MapsId("engWordId")
+    @JoinColumn(name = "ENG_WORD_ID", nullable = false)
+    private EngWordEntity engWord;
 }

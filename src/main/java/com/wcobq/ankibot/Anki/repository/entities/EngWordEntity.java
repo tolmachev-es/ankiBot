@@ -22,7 +22,7 @@ public class EngWordEntity {
     private Long id;
     @Column(name = "ENG_WORD")
     private String engWord;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "RU_WORD_TRANSLATE",
             joinColumns = @JoinColumn(name = "ENG_WORD_ID"),

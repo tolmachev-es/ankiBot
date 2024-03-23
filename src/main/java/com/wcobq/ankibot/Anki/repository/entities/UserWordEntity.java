@@ -18,7 +18,7 @@ public class UserWordEntity {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "WORD_ID")
     private TranslateEntity word;
     @Column(name = "REPEAT_COUNT", nullable = false)

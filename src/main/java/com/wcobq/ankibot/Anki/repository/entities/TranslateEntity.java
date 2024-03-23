@@ -20,11 +20,6 @@ public class TranslateEntity {
     private Long id;
     @Column(name = "RU_WORD", nullable = false)
     private String ruWord;
-    @ManyToMany
-    @JoinTable(
-            name = "RU_WORD_TRANSLATE",
-            joinColumns = @JoinColumn(name = "RU_WORD_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ENG_WORD_ID")
-    )
+    @ManyToMany(mappedBy = "translateEntity")
     private List<EngWordEntity> wordEntities = new ArrayList<>();
 }
