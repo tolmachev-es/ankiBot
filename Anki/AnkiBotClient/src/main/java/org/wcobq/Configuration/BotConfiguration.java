@@ -1,4 +1,4 @@
-package com.wcobq.ankibot.Configuration;
+package org.wcobq.Configuration;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

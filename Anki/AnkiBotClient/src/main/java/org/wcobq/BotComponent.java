@@ -1,7 +1,5 @@
-package com.wcobq.ankibot;
+package org.wcobq;
 
-import com.wcobq.ankibot.Anki.service.interfaces.AnkiService;
-import com.wcobq.ankibot.Configuration.BotConfiguration;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,13 +8,12 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import org.wcobq.Configuration.BotConfiguration;
 
 @Service
 public class BotComponent extends TelegramLongPollingBot {
     @Autowired
     private BotConfiguration botConfiguration;
-    @Autowired
-    private AnkiService ankiService;
     private final TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
     public BotComponent() throws TelegramApiException {
@@ -29,13 +26,6 @@ public class BotComponent extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        ankiService.getMenu(update).stream().forEach(a -> {
-            try {
-                execute(a);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
     @Override
