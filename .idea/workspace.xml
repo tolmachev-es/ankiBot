@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3e79825d-ed48-41a0-9db8-7ca4607369ac" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/mapper/UserMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/model/Quiz.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/EngWordRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/RuWordTranslateRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/TranslateRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/UserWordRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/EngWordEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/RuWordKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/RuWordTranslateEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/TranslateEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/UserEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/repository/entities/UserWordEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/client/BaseClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/client/ReversoClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/request/ReversoOptions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/request/ReversoRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/response/ContextResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/response/LanguageDetection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/response/ResponseResults.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/sender/reverso/response/ReversoResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/AnkiServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/ReversoTranslator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/TranslateServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/UserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/UserWordServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/interfaces/AnkiService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/interfaces/TranslateSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/interfaces/TranslateService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/interfaces/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Anki/service/interfaces/UserWordService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/AnkiBotApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/BotComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/wcobq/ankibot/Configuration/BotConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2e6e7mdgg08aOyb13vRdks9RfGu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/tolma/Downloads/ankiBot/Anki",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3e79825d-ed48-41a0-9db8-7ca4607369ac" name="Changes" comment="" />
+      <created>1711229289657</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1711229289657</updated>
+      <workItem from="1711229290714" duration="9000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
