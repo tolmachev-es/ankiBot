@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -22,11 +21,6 @@ public class EngWordEntity {
     private Long id;
     @Column(name = "ENG_WORD")
     private String engWord;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "RU_WORD_TRANSLATE",
-            joinColumns = @JoinColumn(name = "ENG_WORD_ID"),
-            inverseJoinColumns = @JoinColumn(name = "RU_WORD_ID")
-    )
-    private List<TranslateEntity> translateEntity = new ArrayList<>();
+    @OneToMany(mappedBy = "engWord")
+    private Set<RuWordTranslateEntity> translateEntity;
 }

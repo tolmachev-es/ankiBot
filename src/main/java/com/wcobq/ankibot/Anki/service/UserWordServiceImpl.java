@@ -2,6 +2,7 @@ package com.wcobq.ankibot.Anki.service;
 
 import com.wcobq.ankibot.Anki.model.Quiz;
 import com.wcobq.ankibot.Anki.repository.EngWordRepository;
+import com.wcobq.ankibot.Anki.repository.RuWordTranslateRepository;
 import com.wcobq.ankibot.Anki.repository.UserWordRepository;
 import com.wcobq.ankibot.Anki.repository.entities.EngWordEntity;
 import com.wcobq.ankibot.Anki.repository.entities.TranslateEntity;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserWordServiceImpl implements UserWordService {
     private final UserWordRepository userWordRepository;
     private final EngWordRepository engWordRepository;
+    private final RuWordTranslateRepository ruWordTranslateRepository;
 
     @Override
     public void createUserWord(TranslateEntity translate, UserEntity user) {
@@ -36,7 +38,7 @@ public class UserWordServiceImpl implements UserWordService {
 
     @Override
     public Quiz getQuizWord(UserEntity user) {
-        UserWordEntity userWord = userWordRepository.getByUserOrderByCountAsc(user);
+        UserWordEntity userWord = userWordRepository.getFirstByUserOrderByCountAsc(user);
         Quiz quiz = Quiz.builder()
                 .ruWord(userWord.getWord().getRuWord())
                 .build();
@@ -46,8 +48,8 @@ public class UserWordServiceImpl implements UserWordService {
 
     private List<String> getRandomWords(UserWordEntity userWord) {
         List<String> engWords = new ArrayList<>();
-        engWords.add(userWord.getWord().getWordEntities().getFirst().getEngWord());
-        Set<EngWordEntity> objects = engWordRepository.findAllByEngWord("phone");
+        engWords.add(userWord.getWord().getWordEntities().getFirst().getEngWord().getEngWord());
+
         return engWords;
     }
 }

@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -20,6 +20,6 @@ public class TranslateEntity {
     private Long id;
     @Column(name = "RU_WORD", nullable = false)
     private String ruWord;
-    @ManyToMany(mappedBy = "translateEntity")
-    private List<EngWordEntity> wordEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "ruWord", fetch = FetchType.EAGER)
+    private List<RuWordTranslateEntity> wordEntities;
 }
