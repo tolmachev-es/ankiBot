@@ -2,7 +2,7 @@ package org.wcobq.AnkiServ.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.wcobq.AnkiServ.model.User;
+import org.wcobq.dao.User;
 import org.wcobq.AnkiServ.repository.entities.UserEntity;
 
 @Mapper

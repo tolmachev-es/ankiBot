@@ -1,4 +1,4 @@
-package org.wcobq.Configuration;
+package org.wcobq.configuration;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

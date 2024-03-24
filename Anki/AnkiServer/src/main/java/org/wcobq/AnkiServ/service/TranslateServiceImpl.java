@@ -3,7 +3,7 @@ package org.wcobq.AnkiServ.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.wcobq.AnkiServ.model.User;
+import org.wcobq.dao.User;
 import org.wcobq.AnkiServ.repository.EngWordRepository;
 import org.wcobq.AnkiServ.repository.RuWordTranslateRepository;
 import org.wcobq.AnkiServ.repository.TranslateRepository;

@@ -3,7 +3,7 @@ package org.wcobq.AnkiServ.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.wcobq.AnkiServ.mapper.UserMapper;
-import org.wcobq.AnkiServ.model.User;
+import org.wcobq.dao.User;
 import org.wcobq.AnkiServ.repository.UserRepository;
 import org.wcobq.AnkiServ.repository.entities.UserEntity;
 import org.wcobq.AnkiServ.service.interfaces.UserService;

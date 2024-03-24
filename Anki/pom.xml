@@ -22,6 +22,7 @@
     <modules>
         <module>AnkiServer</module>
         <module>AnkiBotClient</module>
+        <module>AnkiDao</module>
     </modules>
 
 </project>

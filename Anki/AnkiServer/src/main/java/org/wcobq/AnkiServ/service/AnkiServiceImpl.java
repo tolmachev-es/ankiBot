@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.wcobq.AnkiServ.mapper.UserMapper;
 import org.wcobq.AnkiServ.model.Quiz;
-import org.wcobq.AnkiServ.model.User;
+import org.wcobq.dao.User;
 import org.wcobq.AnkiServ.repository.entities.TranslateEntity;
 import org.wcobq.AnkiServ.service.interfaces.AnkiService;
 import org.wcobq.AnkiServ.service.interfaces.TranslateService;
