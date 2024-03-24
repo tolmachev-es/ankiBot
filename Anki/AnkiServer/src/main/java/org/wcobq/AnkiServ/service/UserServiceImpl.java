@@ -1,12 +1,12 @@
-package com.wcobq.ankibot.Anki.service;
+package org.wcobq.AnkiServ.service;
 
-import com.wcobq.ankibot.Anki.mapper.UserMapper;
-import com.wcobq.ankibot.Anki.model.User;
-import com.wcobq.ankibot.Anki.repository.UserRepository;
-import com.wcobq.ankibot.Anki.repository.entities.UserEntity;
-import com.wcobq.ankibot.Anki.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.wcobq.AnkiServ.mapper.UserMapper;
+import org.wcobq.AnkiServ.model.User;
+import org.wcobq.AnkiServ.repository.UserRepository;
+import org.wcobq.AnkiServ.repository.entities.UserEntity;
+import org.wcobq.AnkiServ.service.interfaces.UserService;
 
 import java.util.Optional;
 

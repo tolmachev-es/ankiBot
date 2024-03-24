@@ -1,12 +1,12 @@
-package com.wcobq.ankibot.Anki.controller;
+package org.wcobq.AnkiServ.controller;
 
-import com.wcobq.ankibot.Anki.model.UserWordDao;
-import com.wcobq.ankibot.Anki.service.interfaces.AnkiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.wcobq.AnkiServ.model.UserWordDao;
+import org.wcobq.AnkiServ.service.interfaces.AnkiService;
 
 @RestController
 @RequiredArgsConstructor
