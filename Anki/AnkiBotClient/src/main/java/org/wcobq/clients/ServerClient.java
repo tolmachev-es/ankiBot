@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.wcobq.dao.NewWordDao;
 import org.wcobq.dao.User;
 
 @Service
@@ -18,5 +19,9 @@ public class ServerClient extends BaseClient {
 
     public ResponseEntity<Object> createNewUser(User user) {
         return postNewUser("/users", user);
+    }
+
+    public ResponseEntity<Object> addNewWord(NewWordDao newWordDao) {
+        return postNewWord("/words", newWordDao);
     }
 }

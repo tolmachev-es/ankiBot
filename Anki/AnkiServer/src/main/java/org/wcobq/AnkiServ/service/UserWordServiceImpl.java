@@ -24,7 +24,7 @@ public class UserWordServiceImpl implements UserWordService {
     private final RuWordTranslateRepository ruWordTranslateRepository;
 
     @Override
-    public void createUserWord(TranslateEntity translate, UserEntity user) {
+    public UserWordEntity createUserWord(TranslateEntity translate, UserEntity user) {
         UserWordEntity userWordEntity = UserWordEntity.builder()
                 .word(translate)
                 .user(user)
@@ -32,6 +32,7 @@ public class UserWordServiceImpl implements UserWordService {
                 .isStudy(true)
                 .build();
         userWordRepository.save(userWordEntity);
+        return userWordEntity;
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.wcobq.dao.User;
 
 @Service
 public interface UserService {
-    User checkUser(User user);
+    User checkUser(Long userId);
 
     User createUser(User user);
 }

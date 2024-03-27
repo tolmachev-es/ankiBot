@@ -16,21 +16,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User checkUser(User user) {
-        if (getUser(user)) {
-            return user;
-        } else {
-            return createUser(user);
-        }
-    }
-
-    public boolean getUser(User user) {
-        Optional<UserEntity> getUser = userRepository.findById(user.getId());
-        if (getUser.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+    public User checkUser(Long userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        return user.map(UserMapper.USER_MAPPER::fromEntity).orElse(null);
     }
 
     @Override

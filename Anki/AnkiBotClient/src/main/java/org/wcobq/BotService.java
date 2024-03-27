@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.wcobq.clients.ServerClient;
+import org.wcobq.dao.NewWordDao;
 import org.wcobq.dao.User;
 
 import java.util.ArrayList;
@@ -19,8 +20,11 @@ public class BotService {
 
     public List<SendMessage> menu(Update update) {
         List<SendMessage> messages = new ArrayList<>();
-        if (getText(update).equals("/start")) {
+        String text = getText(update);
+        if (text.equals("/start")) {
             messages.add(createUser(update));
+        } else {
+            messages.add(addWord(update));
         }
         return messages;
     }
@@ -30,6 +34,20 @@ public class BotService {
         try {
             User newUser = objectMapper.convertValue(client.createNewUser(user), User.class);
             SendMessage sendMessage = new SendMessage(getChatId(update), String.format("Добро пожаловать в Anki Bot"));
+            return sendMessage;
+        } catch (ClassCastException e) {
+            return null;
+        }
+    }
+
+    public SendMessage addWord(Update update) {
+        NewWordDao newWordDao = NewWordDao.builder()
+                .userId(String.valueOf(getUserID(update)))
+                .word(getText(update)).build();
+        try {
+            NewWordDao createdWord = objectMapper.convertValue(client.addNewWord(newWordDao), NewWordDao.class);
+            SendMessage sendMessage = new SendMessage(getChatId(update),
+                    String.format("Добавлено новое слово %s", createdWord.getWord()));
             return sendMessage;
         } catch (ClassCastException e) {
             return null;

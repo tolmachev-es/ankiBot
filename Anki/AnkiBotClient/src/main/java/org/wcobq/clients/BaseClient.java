@@ -27,8 +27,8 @@ public class BaseClient {
         return responseBuilder.build();
     }
 
-    private <T> ResponseEntity<Object> makeAndSendAddWordRequest(HttpMethod method, String path, String userId, NewWordDao newWord) {
-        HttpEntity<?> requestEntity = new HttpEntity<>(newWord, addHttpHeaders(userId));
+    private <T> ResponseEntity<Object> makeAndSendAddWordRequest(HttpMethod method, String path, NewWordDao newWord) {
+        HttpEntity<?> requestEntity = new HttpEntity<>(newWord, addHttpHeaders(null));
         ResponseEntity<Object> ankiServiceResponse;
         try {
             ankiServiceResponse = restTemplate.exchange(path, method, requestEntity, Object.class);
@@ -49,8 +49,8 @@ public class BaseClient {
         return prepareGatewayResponseAddWord(createServiceResponse);
     }
 
-    protected <T> ResponseEntity<Object> post(String path, NewWordDao newWordDao) {
-        return makeAndSendAddWordRequest(HttpMethod.POST, path, newWordDao.getUserId(), newWordDao);
+    protected <T> ResponseEntity<Object> postNewWord(String path, NewWordDao newWordDao) {
+        return makeAndSendAddWordRequest(HttpMethod.POST, path, newWordDao);
     }
 
     protected <T> ResponseEntity<Object> postNewUser(String path, User user) {
