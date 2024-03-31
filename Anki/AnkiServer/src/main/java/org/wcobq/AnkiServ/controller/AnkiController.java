@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.wcobq.dao.NewWordDao;
 import org.wcobq.dao.User;
-import org.wcobq.AnkiServ.model.UserWordDao;
 import org.wcobq.AnkiServ.service.interfaces.AnkiService;
 
 @RestController
