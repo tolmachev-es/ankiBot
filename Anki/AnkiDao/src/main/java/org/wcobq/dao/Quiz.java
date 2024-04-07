@@ -1,4 +1,4 @@
-package org.wcobq.AnkiServ.model;
+package org.wcobq.dao;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;

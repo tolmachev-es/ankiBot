@@ -28,4 +28,14 @@ public class UserServiceImpl implements UserService {
         return UserMapper.USER_MAPPER.fromEntity(userEntity);
     }
 
+    @Override
+    public UserEntity getUserEntity(Long userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
 }

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.wcobq.AnkiServ.mapper.UserMapper;
+import org.wcobq.AnkiServ.repository.entities.UserEntity;
 import org.wcobq.dao.NewWordDao;
+import org.wcobq.dao.Quiz;
 import org.wcobq.dao.User;
 import org.wcobq.AnkiServ.repository.entities.TranslateEntity;
 import org.wcobq.AnkiServ.service.interfaces.AnkiService;
@@ -25,8 +27,8 @@ public class AnkiServiceImpl implements AnkiService {
     private final UserWordService userWordService;
 
     @Override
-    public void getMenu(Update update) {
-
+    public Quiz getQuiz(Long userId) {
+        return userWordService.getQuizWord(userService.getUserEntity(userId));
     }
 
     @Override

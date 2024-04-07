@@ -7,6 +7,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.wcobq.dao.NewWordDao;
+import org.wcobq.dao.Quiz;
 import org.wcobq.dao.User;
 
 @Service
@@ -21,7 +22,11 @@ public class ServerClient extends BaseClient {
         return postNewUser("/users", user);
     }
 
-    public ResponseEntity<Object> addNewWord(NewWordDao newWordDao) {
+    public ResponseEntity<NewWordDao> addNewWord(NewWordDao newWordDao) {
         return postNewWord("/words", newWordDao);
+    }
+
+    public Quiz getQuizFromServer(Long userId) {
+        return getQuiz(userId);
     }
 }

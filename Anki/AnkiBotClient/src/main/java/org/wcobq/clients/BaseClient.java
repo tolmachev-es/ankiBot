@@ -1,12 +1,16 @@
 package org.wcobq.clients;
 
+import org.glassfish.jersey.server.Uri;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.wcobq.dao.NewWordDao;
+import org.wcobq.dao.Quiz;
 import org.wcobq.dao.User;
 
+import java.net.URI;
 import java.util.List;
 
 public class BaseClient {
@@ -15,7 +19,7 @@ public class BaseClient {
     public BaseClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    private static ResponseEntity<Object> prepareGatewayResponseAddWord(ResponseEntity<Object> response) {
+    private static ResponseEntity<NewWordDao> prepareGatewayResponseAddWord(ResponseEntity<NewWordDao> response) {
         if (response.getStatusCode().is2xxSuccessful()) {
             return response;
         }
@@ -27,20 +31,20 @@ public class BaseClient {
         return responseBuilder.build();
     }
 
-    private <T> ResponseEntity<Object> makeAndSendAddWordRequest(HttpMethod method, String path, NewWordDao newWord) {
+    private <T> ResponseEntity<NewWordDao> makeAndSendAddWordRequest(HttpMethod method, String path, NewWordDao newWord) {
         HttpEntity<?> requestEntity = new HttpEntity<>(newWord, addHttpHeaders(null));
-        ResponseEntity<Object> ankiServiceResponse;
+        ResponseEntity<NewWordDao> ankiServiceResponse;
         try {
-            ankiServiceResponse = restTemplate.exchange(path, method, requestEntity, Object.class);
+            ankiServiceResponse = restTemplate.exchange(path, method, requestEntity, NewWordDao.class);
         } catch (HttpStatusCodeException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
+            return null;
         }
         return prepareGatewayResponseAddWord(ankiServiceResponse);
     }
 
     private <T> ResponseEntity<Object> makeAndSendCreateUserRequest(HttpMethod method, String path, User user) {
         HttpEntity<?> requestEntity = new HttpEntity<>(user, addHttpHeaders(null));
-        ResponseEntity<Object> createServiceResponse;
+        ResponseEntity<NewWordDao> createServiceResponse;
         try {
             createServiceResponse = restTemplate.exchange(path, method, requestEntity, Object.class);
         } catch (HttpStatusCodeException e) {
@@ -49,12 +53,22 @@ public class BaseClient {
         return prepareGatewayResponseAddWord(createServiceResponse);
     }
 
-    protected <T> ResponseEntity<Object> postNewWord(String path, NewWordDao newWordDao) {
+    private <T> Quiz makeAndSendGetQuizRequest(HttpMethod method, String path, Long userId) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(path + userId);
+        URI uri = builder.build(false).toUri();
+        return restTemplate.getForObject(uri, Quiz.class);
+    }
+
+    protected <T> ResponseEntity<NewWordDao> postNewWord(String path, NewWordDao newWordDao) {
         return makeAndSendAddWordRequest(HttpMethod.POST, path, newWordDao);
     }
 
     protected <T> ResponseEntity<Object> postNewUser(String path, User user) {
         return makeAndSendCreateUserRequest(HttpMethod.POST, path, user);
+    }
+
+    protected <T> Quiz getQuiz(Long userId) {
+        return makeAndSendGetQuizRequest(HttpMethod.GET, "/quiz", userId);
     }
 
     private HttpHeaders addHttpHeaders(@Nullable String userId) {

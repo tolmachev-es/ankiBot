@@ -3,7 +3,6 @@ package org.wcobq.AnkiServ.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.wcobq.AnkiServ.model.Quiz;
 import org.wcobq.AnkiServ.repository.EngWordRepository;
 import org.wcobq.AnkiServ.repository.RuWordTranslateRepository;
 import org.wcobq.AnkiServ.repository.UserWordRepository;
@@ -12,6 +11,7 @@ import org.wcobq.AnkiServ.repository.entities.TranslateEntity;
 import org.wcobq.AnkiServ.repository.entities.UserEntity;
 import org.wcobq.AnkiServ.repository.entities.UserWordEntity;
 import org.wcobq.AnkiServ.service.interfaces.UserWordService;
+import org.wcobq.dao.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
