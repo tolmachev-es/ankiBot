@@ -1,11 +1,8 @@
 package org.wcobq;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -13,35 +10,58 @@ import org.wcobq.clients.ServerClient;
 import org.wcobq.dao.NewWordDao;
 import org.wcobq.dao.Quiz;
 import org.wcobq.dao.User;
-import org.wcobq.repositories.UserStatusEntity;
-import org.wcobq.repositories.UserStatusRepository;
+import org.wcobq.repositories.RedisTemplateUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BotService {
     private final ServerClient client;
-    private final ObjectMapper objectMapper;
-    private final UserStatusRepository userStatusRepository;
+    private final RedisTemplateUser userS;
 
     public List<SendMessage> menu(Update update) {
         List<SendMessage> messages = new ArrayList<>();
         String text = getText(update);
-        if (text.equals("/start")) {
-            messages.add(createUser(update));
-            messages.add(getMenuMessage(getChatId(update)));
-        } else if (text.equals("ADD_NEW_WORD")) {
-            messages.add(getAddWordMessage(update));
-        } else if (text.equals("GET_QUIZ")) {
-            messages.add(getQuizMessage(update));
+        Long userId = getUserID(update);
+        String parameter = userS.get(String.valueOf(userId));
+        if (parameter != null) {
+            if (text.equals("MENU")) {
+                messages.add(getMenu(update, userId));
+            } else if (parameter.equals("ADD_WORD")) {
+                if (update.getCallbackQuery() == null) {
+                    messages.add(addWord(update));
+                    messages.add(getMenu(update, userId));
+                }
+            } else if (parameter.equals("QUIZ")) {
+                messages.add(checkAnswer(update));
+                messages.add(getQuizMessage(update, userId));
+            }
         } else {
-            messages.add(addWord(update));
-            messages.add(getMenuMessage(getChatId(update)));
+            if (text.equals("/start")) {
+                messages.add(createUser(update));
+                messages.add(getMenuMessage(getChatId(update)));
+            } else if (text.equals("ADD_NEW_WORD")) {
+                messages.add(getAddWordMessage(update));
+            } else if (text.equals("GET_QUIZ")) {
+                messages.add(getQuizMessage(update, userId));
+            }
         }
         return messages;
+    }
+
+    private SendMessage checkAnswer(Update update) {
+        String[] result = getText(update).split("==");
+        Boolean answer = client.patchQuizAnswer(getUserID(update), result[0], result[1]);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(getChatId(update));
+        if (answer) {
+            sendMessage.setText("Правильно");
+        } else {
+            sendMessage.setText("Попробуй еще раз");
+        }
+        return sendMessage;
     }
 
     public SendMessage createUser(Update update) {
@@ -50,13 +70,8 @@ public class BotService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(getChatId(update));
         try {
-            User newUser = objectMapper.convertValue(client.createNewUser(user), User.class);
-            sendMessage.setText(String.format("Добро пожаловать в Anki Bot"));
-            UserStatusEntity userStatusEntity = UserStatusEntity.builder().userId(userId)
-                    .getQuiz(false)
-                    .addWord(false)
-                    .build();
-            userStatusRepository.save(userStatusEntity);
+            User newUser = client.createNewUser(user);
+            sendMessage.setText(String.format("Добро пожаловать в Anki Bot, %s", newUser.getUsername()));
         } catch (ClassCastException e) {
             sendMessage.setText("Произошла ошибка при создании учетной записи");
         }
@@ -68,31 +83,38 @@ public class BotService {
                 .userId(String.valueOf(getUserID(update)))
                 .word(getText(update)).build();
         SendMessage sendMessage = new SendMessage();
+
         sendMessage.setChatId(getChatId(update));
         try {
-            NewWordDao createdWord = objectMapper.convertValue(client.addNewWord(newWordDao), NewWordDao.class);
+            NewWordDao createdWord = client.addNewWord(newWordDao);
             sendMessage.setText(String.format("Добавлено новое слово %s", createdWord.getWord()));
             return sendMessage;
         } catch (ClassCastException e) {
             sendMessage.setText("Произошла ошибка при добавлении слова");
         }
         return sendMessage;
+
+    }
+
+    private SendMessage getMenu(Update update, Long userId) {
+        userS.delete(String.valueOf(userId));
+        return getMenuMessage(getChatId(update));
     }
 
     private String getUsername(Update update) {
         try {
-            return update.getMessage().getChat().getUserName();
+            return update.getMessage().getFrom().getUserName();
         } catch (Exception e) {
-            return update.getCallbackQuery().getMessage().getChat().getUserName();
+            return update.getCallbackQuery().getFrom().getUserName();
         }
     }
 
 
     private Long getUserID(Update update) {
-        try {
-            return update.getMessage().getChat().getId();
-        } catch (Exception e) {
-            return update.getCallbackQuery().getMessage().getChat().getId();
+        if (update.getCallbackQuery() != null) {
+            return update.getCallbackQuery().getFrom().getId();
+        } else {
+            return update.getMessage().getFrom().getId();
         }
     }
 
@@ -135,42 +157,33 @@ public class BotService {
     private SendMessage getAddWordMessage(Update update) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(getChatId(update));
-        Optional<UserStatusEntity> userStatusEntity = userStatusRepository.findById(getUserID(update));
-        if (userStatusEntity.isPresent()) {
-            userStatusEntity.get().setAddWord(true);
-            userStatusRepository.save(userStatusEntity.get());
-            sendMessage.setText("Введите слово на русском которое хотите добавить");
-        } else {
-            sendMessage.setText("Пользователь не найден");
-        }
+        userS.save(String.valueOf(getUserID(update)), "ADD_WORD");
+        sendMessage.setText("Введите слово на русском которое хотите добавить");
         return sendMessage;
     }
 
-    private SendMessage getQuizMessage(Update update) {
+    private SendMessage getQuizMessage(Update update, Long userId) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(getChatId(update));
-        Optional<UserStatusEntity> userStatusEntity = userStatusRepository.findById(getUserID(update));
-        if (userStatusEntity.isPresent()) {
-            userStatusEntity.get().setGetQuiz(true);
-            userStatusRepository.save(userStatusEntity.get());
-            Quiz quiz = client.getQuizFromServer(userStatusEntity.get().getUserId());
-            sendMessage.setText(quiz.getRuWord());
-            List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-            for (String engWord: quiz.getEngWords()) {
-                InlineKeyboardButton inlineKeyboardButton = InlineKeyboardButton.builder()
-                        .text(engWord)
-                        .callbackData(quiz.getRuWord() + "==" + engWord)
-                        .build();
-                buttons.add(List.of(inlineKeyboardButton));
-            }
+        sendMessage.setChatId(getChatId(update));
+        userS.save(String.valueOf(userId), "QUIZ");
+        Quiz quiz = client.getQuizFromServer(getUserID(update));
+        sendMessage.setText(quiz.getRuWord());
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        for (String engWord : quiz.getEngWords()) {
             InlineKeyboardButton inlineKeyboardButton = InlineKeyboardButton.builder()
-                    .text("MENU")
-                    .callbackData("MENU")
+                    .text(engWord)
+                    .callbackData(quiz.getRuWord() + "==" + engWord)
                     .build();
             buttons.add(List.of(inlineKeyboardButton));
-        } else {
-            sendMessage.setText("Пользователь не найден");
         }
+        InlineKeyboardButton inlineKeyboardButton = InlineKeyboardButton.builder()
+                .text("MENU")
+                .callbackData("MENU")
+                .build();
+        buttons.add(List.of(inlineKeyboardButton));
+        markup.setKeyboard(buttons);
+        sendMessage.setReplyMarkup(markup);
         return sendMessage;
     }
 }

@@ -9,4 +9,6 @@ public interface UserWordService {
     UserWordEntity createUserWord(TranslateEntity translate, UserEntity user);
 
     Quiz getQuizWord(UserEntity user);
+
+    void getAnswer(UserEntity user, String ruWord, String engWord);
 }

@@ -2,26 +2,57 @@ version: '3.1'
 services:
   anki-db:
     image: postgres:14-alpine
-    container_name: server-database
+    container_name: anki-db
     ports:
       - "6541:5432"
     environment:
     - POSTGRES_DB=server_anki_db
     - POSTGRES_USER=root
-    - PGDATA=/var/lib/postgresql/data1
     - POSTGRES_PASSWORD=root
-    - DB_HOST=localhost
-    - DB_PORT=5432
+    - PGDATA=/var/lib/postgresql/data1
 
-  bot-db:
-    image: postgres:14-alpine
-    container_name: bot-database
+  redis:
+    image: redis:alpine3.19
+    container_name: bot-db
+    restart: always
     ports:
-      - "6542:5432"
+      - "6542:6379"
+    volumes:
+      - /to/local/data:/root/redis
+      - /to/local/local/redis.conf:/usr/local/etc/redis/redis.conf
     environment:
-      - POSTGRES_DB=bot_anki_db
-      - POSTGRES_USER=root1
-      - PGDATA=/var/lib/postgresql/data1
-      - POSTGRES_PASSWORD=root1
-      - DB_HOST=localhost
-      - DB_PORT=5432
+      - REDIS_PASSWORDS:root1
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+
+  anki-telegram-client:
+    build: AnkiBotClient
+    container_name: anki-telegram-client
+    ports:
+      - "8082:8082"
+    depends_on:
+      - anki-server
+      - redis
+    environment:
+      - BOT.TOKEN=
+      - BOT.NAME=
+      - SPRING.DATA.REDIS.HOST=redis
+      - SPRING.DATA.REDIS.PORT=6379
+      - SPRING.DATA.REDIS.PASSWORD=root1
+      - ANKI.SERVER.PORT=http://anki-server:8081
+
+  anki-server:
+    build: AnkiServer
+    container_name: anki-server
+    ports:
+      - "8081:8081"
+    depends_on:
+      - anki-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://anki-db:5432/server_anki_db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+
+networks:
+  anki-db:
+    driver: bridge

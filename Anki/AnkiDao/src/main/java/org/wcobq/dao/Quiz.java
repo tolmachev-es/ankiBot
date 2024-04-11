@@ -1,6 +1,7 @@
 package org.wcobq.dao;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Random;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class Quiz {
     private String ruWord;
     private List<String> engWords;

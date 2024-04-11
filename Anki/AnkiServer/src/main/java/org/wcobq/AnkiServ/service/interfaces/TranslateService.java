@@ -8,6 +8,4 @@ import org.wcobq.AnkiServ.repository.entities.TranslateEntity;
 @Service
 public interface TranslateService {
     TranslateEntity addWord(String word);
-
-    SendMessage getQuiz(User user);
 }

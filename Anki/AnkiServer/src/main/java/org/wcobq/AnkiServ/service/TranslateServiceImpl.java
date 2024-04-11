@@ -31,11 +31,6 @@ public class TranslateServiceImpl implements TranslateService {
         return getWords(word);
     }
 
-    @Override
-    public SendMessage getQuiz(User user) {
-        return null;
-    }
-
     private TranslateEntity getWords(String word) {
         String newWord = word.toLowerCase();
         Optional<TranslateEntity> getWord = translateRepository.findByRuWord(newWord);

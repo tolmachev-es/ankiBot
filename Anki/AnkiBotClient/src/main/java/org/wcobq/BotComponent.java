@@ -1,7 +1,6 @@
 package org.wcobq;
 
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,15 +10,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import org.wcobq.configuration.BotConfiguration;
-import org.wcobq.dao.NewWordDao;
 
 @Service
 public class BotComponent extends TelegramLongPollingBot {
+    private final TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
     @Autowired
     private BotConfiguration botConfiguration;
     @Autowired
     private BotService botService;
-    private final TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
     public BotComponent() throws TelegramApiException {
     }

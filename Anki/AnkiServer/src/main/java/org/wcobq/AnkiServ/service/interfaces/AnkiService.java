@@ -10,4 +10,6 @@ public interface AnkiService {
     Quiz getQuiz(Long userId);
 
     NewWordDao addWord(NewWordDao newWordDao);
+
+    void checkAnswer(Long userId, String ruWord, String engWord);
 }

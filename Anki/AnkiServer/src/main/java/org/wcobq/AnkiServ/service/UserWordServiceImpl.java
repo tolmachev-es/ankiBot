@@ -15,6 +15,7 @@ import org.wcobq.dao.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +26,19 @@ public class UserWordServiceImpl implements UserWordService {
 
     @Override
     public UserWordEntity createUserWord(TranslateEntity translate, UserEntity user) {
-        UserWordEntity userWordEntity = UserWordEntity.builder()
-                .word(translate)
-                .user(user)
-                .count(0L)
-                .isStudy(true)
-                .build();
-        userWordRepository.save(userWordEntity);
-        return userWordEntity;
+        Optional<UserWordEntity> hasWordEntity = userWordRepository.getByUser_IdAndWord_Id(user.getId(), translate.getId());
+        if (hasWordEntity.isEmpty()) {
+            UserWordEntity userWordEntity = UserWordEntity.builder()
+                    .word(translate)
+                    .user(user)
+                    .count(0L)
+                    .isStudy(true)
+                    .build();
+            userWordRepository.save(userWordEntity);
+            return userWordEntity;
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     @Override
@@ -43,6 +49,24 @@ public class UserWordServiceImpl implements UserWordService {
                 .build();
         quiz.addRandomWord(getRandomWords(userWord));
         return quiz;
+    }
+
+    @Override
+    public void getAnswer(UserEntity user, String ruWord, String engWord) {
+        Optional<RuWordTranslateEntity> answer = ruWordTranslateRepository
+                .findByRuWord_RuWordAndEngWord_EngWord(ruWord, engWord);
+        if (answer.isEmpty()) {
+            throw new IncorrectAwswerException();
+        } else {
+            Optional<UserWordEntity> word = userWordRepository.getByUserAndWord(user, answer.get().getRuWord());
+            if (word.isPresent()) {
+                UserWordEntity getWord = word.get();
+                getWord.setCount(getWord.getCount() + 1L);
+                userWordRepository.save(getWord);
+            } else {
+                throw new IncorrectAwswerException();
+            }
+        }
     }
 
     private List<String> getRandomWords(UserWordEntity userWord) {
